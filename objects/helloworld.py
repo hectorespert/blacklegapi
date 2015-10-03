@@ -3,13 +3,8 @@ __author__ = 'Blackleg'
 
 class HelloWorld:
 
-    def __init__(self):
-        self.hello="Hello World"
-
-    def __init__(self, hello):
+    def __init__(self, hello="Hello World"):
         self.hello = hello
-
-
 
     @staticmethod
     def fromJson(json):
