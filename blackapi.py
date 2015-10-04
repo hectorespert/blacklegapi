@@ -1,37 +1,46 @@
 from time import time
-from bottle import route, run, request, default_app, error, abort, hook, response
 
-from bottleutils import checkAcceptIsJson, parseObjectToJson, checkContentIsJson, parseJsonToObject, setResponseContentTypeJson, \
-    getAccept
+from bottle import route, run, request, default_app, error, abort, hook, response
+from datetime import date
+
+from utilities.bottle import checkAcceptIsJson, checkContentIsJson, setResponseContentTypeJson, parseRequestToJson
 from objects.error import Error
 from objects.helloworld import HelloWorld
 from objects.mathoperation import MathOperation
 
 
-#Web
+
+# Web
+from objects.model import initModel, closeModel, connectModel, QuoteOfDay, parseModelToJson
 from objects.timeobject import TimeObject
 
+# Init
+from utilities.json import parseObjectToJson
+
+initModel()
 
 @error(404)
 def error404(error):
     if checkAcceptIsJson(request):
         return parseObjectToJson(Error())
-    ##else:
-        #redirect("http://api.blackleg.es/error404.html")
+        ##else:
+        # redirect("http://api.blackleg.es/error404.html")
 
-"""@hook('before_request')
+
+@hook('before_request')
 def before_request():
-    print("Before Request")
-    print(request.content_type)"""
+    connectModel()
+
 
 @hook('after_request')
 def enable_cors():
+    closeModel()
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
     response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type'
 
 
-#Rest Services
+# Rest Services
 
 @route('/<method>', method='OPTIONS')
 def options(method):
@@ -45,6 +54,7 @@ def hello():
     else:
         return abort(404)
 
+
 @route('/hello', method='GET')
 def hello():
     if checkAcceptIsJson(request):
@@ -54,37 +64,47 @@ def hello():
     else:
         return abort(404)
 
+
 @route('/hello', method='POST')
 def hello():
     if checkAcceptIsJson(request) and checkContentIsJson(request):
-        hello = HelloWorld.fromJson(parseJsonToObject(request))
+        setResponseContentTypeJson(response)
+        hello = HelloWorld.fromJson(parseRequestToJson(request))
         return parseObjectToJson(hello)
     else:
         return abort(404)
 
-"""@route('/quoteoftheday', method='GET')
+
+@route('/quoteoftheday', method='GET')
 def quoteoftheday():
-    hello = HelloWorld()
-    if checkAccceptIsJson(request):
-        return parseObjectToJson(hello)
+    if checkAcceptIsJson(request):
+        setResponseContentTypeJson(response)
+        quote = QuoteOfDay.get(QuoteOfDay.id == 1)
+        return parseModelToJson(quote)
     else:
         return abort(404)
+
 
 @route('/quoteoftheday', method='POST')
 def quoteoftheday():
-    hello = HelloWorld()
-    if checkAccceptIsJson(request):
-        return parseObjectToJson(hello)
+    if checkAcceptIsJson(request) and checkContentIsJson(request):
+        setResponseContentTypeJson(response)
+        json = parseRequestToJson(request)
+        updatedQuote = QuoteOfDay.update(author = json['author'], quote = json['quote'], date = date.today().isoformat()).where(QuoteOfDay.id == 1)
+        updatedQuote.execute()
     else:
         return abort(404)
-"""
+
+
 
 @route('/math', method='POST')
 def getmath():
     if checkAcceptIsJson(request) and checkContentIsJson(request):
-        return parseObjectToJson(MathOperation.fromJson(parseJsonToObject(request)))
+        setResponseContentTypeJson(response)
+        return parseObjectToJson(MathOperation.fromJson(parseRequestToJson(request)))
     else:
         return abort(404)
+
 
 @route('/time', method='GET')
 def gettime():

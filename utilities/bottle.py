@@ -1,8 +1,5 @@
-from os import access
 
 __author__ = 'Blackleg'
-import json
-from xml.dom.minidom import parse
 
 appall = "*/*"
 appxml = "application/xml"
@@ -48,15 +45,6 @@ def checkContentIs(request, app):
 def checkContentIsJson(request):
     return checkContentIs(request, appjson)
 
-def parseObjectToJson(object):
-    return json.dumps(object.__dict__)
-
-def parseObjectToXml(object):
-    return parse(object.__dict__)
-
-def parseJsonToObject(request):
-    return request.json
-
 def setResponseContentType(response, type):
     response.content_type = type
 
@@ -64,3 +52,5 @@ def setResponseContentTypeJson(response):
     setResponseContentType(response, appjson)
 
 
+def parseRequestToJson(request):
+    return request.json
