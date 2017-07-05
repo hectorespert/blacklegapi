@@ -1,4 +1,3 @@
-
 __author__ = 'Blackleg'
 
 appall = "*/*"
@@ -27,14 +26,17 @@ def checkIfAcceptContainApp(request, app):
 def checkAcceptIsXml(request):
     return checkIfAcceptContainApp(request, appxml)
 
+
 def checkAcceptIsJson(request):
     return checkIfAcceptContainApp(request, appjson)
 
 def checkAcceptIsPlain(request):
     return checkIfAcceptContainApp(request, appplain)
 
+
 def getContentType(request):
     return request.content_type;
+
 
 def checkContentIs(request, app):
     if app in getContentType(request):
@@ -42,11 +44,14 @@ def checkContentIs(request, app):
     else:
         return False
 
+
 def checkContentIsJson(request):
     return checkContentIs(request, appjson)
 
+
 def setResponseContentType(response, type):
     response.content_type = type
+
 
 def setResponseContentTypeJson(response):
     setResponseContentType(response, appjson)

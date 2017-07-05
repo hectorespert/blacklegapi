@@ -8,6 +8,7 @@ __author__ = 'Blackleg'
 
 psql_db = PostgresqlDatabase(DBNAME, user=DBUSER)
 
+
 class BaseModel(Model):
     """A base model that will use our Postgresql database"""
     class Meta:
