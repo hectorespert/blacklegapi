@@ -1,8 +1,6 @@
 from json import JSONEncoder, dumps
 from datetime import date
 
-__author__ = 'Blackleg'
-
 
 class ExtendedJsonEncoder(JSONEncoder):
     def default(self, obj):
@@ -17,10 +15,10 @@ class ExtendedJsonEncoder(JSONEncoder):
             return super().default(obj)
 
 
-def parseObjectToJson(object):
+def parseToJson(object):
     if isinstance(object, dict):
         return dumps(object, cls=ExtendedJsonEncoder)
     else:
-        return parseObjectToJson(object.__dict__)
+        return parseToJson(object.__dict__)
 
 
