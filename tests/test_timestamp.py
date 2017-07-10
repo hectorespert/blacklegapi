@@ -1,6 +1,8 @@
 import unittest
+
 from boddle import boddle
-from api import gettimestamp
+
+from server.api import gettimestamp
 
 
 class TestStatus(unittest.TestCase):

@@ -1,3 +1,3 @@
 import bottle
-import api
+import server.api
 application = bottle.default_app()

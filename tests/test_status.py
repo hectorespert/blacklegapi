@@ -1,6 +1,8 @@
 import unittest
+
 from boddle import boddle
-from api import status
+
+from server.api import status
 
 
 class TestStatus(unittest.TestCase):
