@@ -1,6 +1,6 @@
 import unittest
 from boddle import boddle
-from blackapi import gettimestamp
+from api import gettimestamp
 
 
 class TestStatus(unittest.TestCase):

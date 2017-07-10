@@ -1,6 +1,6 @@
 import unittest
 from boddle import boddle
-from blackapi import status
+from api import status
 
 
 class TestStatus(unittest.TestCase):
